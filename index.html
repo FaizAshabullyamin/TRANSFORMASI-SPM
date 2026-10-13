@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masteri Transformasi SPM - 100 Soalan & Leaderboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Fredoka', 'cursive'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#035485',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            user-select: none;
+        }
+        .canvas-container {
+            touch-action: none;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-800 min-h-screen flex flex-col">
+
+    <header class="bg-slate-800 border-b border-slate-700 text-white sticky top-0 z-30 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-sky-500 to-indigo-600 p-2.5 rounded-xl shadow-md text-white font-bold text-xl">
+                    <i class="fa-solid fa-shapes"></i>
+                </div>
+                <div>
+                    <h1 class="font-display text-xl md:text-2xl font-bold tracking-wide text-sky-400">Masteri Transformasi SPM</h1>
+                    <p class="text-xs text-slate-400 font-medium">100 Soalan SPM 2022–2026 & Set Percubaan</p>
+                </div>
+            </div>
+
+            <!-- Player Profile & Score -->
+            <div class="flex items-center space-x-3 bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-700">
+                <button onclick="openLoginModal()" class="text-left group hover:opacity-80 transition">
+                    <span id="headerPlayerName" class="block text-xs font-bold text-sky-300 group-hover:underline">Belum Log Masuk</span>
+                    <span id="headerSchoolName" class="block text-[10px] text-slate-400 truncate max-w-[140px]">Sila Tekan Untuk Log Masuk</span>
+                </button>
+                <div class="h-6 w-px bg-slate-700"></div>
+                <div class="text-center px-1">
+                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Markah</span>
+                    <span id="stat-score" class="text-base font-bold text-yellow-400">0</span>
+                </div>
+                <div class="h-6 w-px bg-slate-700"></div>
+                <div class="text-center px-1">
+                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Streak</span>
+                    <span id="stat-streak" class="text-base font-bold text-orange-400">🔥 0</span>
+                </div>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex items-center space-x-2">
+                <button onclick="openLeaderboardModal()" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-trophy text-slate-900"></i>
+                    <span>Ranking</span>
+                </button>
+                <button onclick="openFormulaModal()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold transition text-slate-200">
+                    <i class="fa-solid fa-book-open text-sky-400"></i>
+                    <span>Nota</span>
+                </button>
+                <button onclick="openGoogleSheetSettings()" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-600 rounded-lg text-xs font-semibold transition text-slate-100 flex items-center gap-1" title="Tetapan Google Sheet">
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span class="hidden sm:inline">Google Sheet</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT COLUMN: Interactive Coordinate Plane & Geometric Workbench -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+            
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
+                <div class="bg-slate-100 px-4 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                            <span class="w-2 h-2 rounded-full bg-blue-600 mr-1.5"></span> Objek (O)
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800">
+                            <span class="w-2 h-2 rounded-full bg-rose-600 mr-1.5"></span> Imej (I)
+                        </span>
+                    </div>
+
+                    <div class="flex items-center space-x-1 bg-slate-200 p-1 rounded-lg text-xs font-semibold">
+                        <button id="tool-select-node" onclick="setMode('select')" class="tool-btn px-2.5 py-1 rounded-md bg-white shadow-sm text-slate-800">
+                            <i class="fa-solid fa-arrow-pointer mr-1"></i> Pilih Pusat
+                        </button>
+                        <button id="tool-draw-lines" onclick="setMode('connect')" class="tool-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-ruler-combined mr-1"></i> Garis Bucu (A-A')
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative canvas-container bg-slate-900 flex-1 flex items-center justify-center p-2 min-h-[380px] md:min-h-[450px]">
+                    <canvas id="gridCanvas" class="rounded-lg shadow-inner cursor-crosshair bg-slate-950"></canvas>
+                    
+                    <div id="coordHover" class="absolute top-4 left-4 bg-slate-800/90 text-white text-xs px-3 py-1.5 rounded-md font-mono backdrop-blur border border-slate-700 pointer-events-none">
+                        Koordinat: (x: 0, y: 0)
+                    </div>
+
+                    <div id="rotationControls" class="hidden absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-800/95 border border-slate-600 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center space-x-2 backdrop-blur text-xs">
+                        <span class="text-slate-300 font-semibold hidden sm:inline"><i class="fa-solid fa-arrows-spin text-sky-400 mr-1"></i> Visual Putaran:</span>
+                        <button onclick="previewRotate(-90)" class="px-2.5 py-1 bg-sky-600 hover:bg-sky-500 rounded font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> 90° Lawan
+                        </button>
+                        <button onclick="previewRotate(90)" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 rounded font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-right"></i> 90° Ikut
+                        </button>
+                        <button onclick="previewRotate(180)" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-500 rounded font-bold">
+                            180°
+                        </button>
+                        <button onclick="resetPreviewRotation()" class="px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-slate-300">
+                            Asal
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-3 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs gap-2">
+                    <div class="flex items-center space-x-2 text-slate-600">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                        <span id="canvasInstruction" class="font-medium">Klik pada titik untuk menentukan Pusat atau sambung bucu!</span>
+                    </div>
+                    <button onclick="clearLines()" class="text-slate-500 hover:text-rose-600 font-semibold flex items-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i> Padam Garis
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4">
+                <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-compass-drafting text-sky-600"></i>
+                    <span>Panduan Kaedah Analisis Geometri SPM:</span>
+                </h3>
+                <div id="methodDetailBox" class="text-xs text-slate-600 space-y-1.5 bg-sky-50/70 p-3 rounded-xl border border-sky-100">
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Question & SPM Answer Input Workbench -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+            
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-5">
+                
+                <div class="bg-slate-100 -mx-5 -mt-5 p-4 rounded-t-2xl border-b border-slate-200 mb-4">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span id="questionNumText" class="text-xs font-black text-sky-700 uppercase tracking-wide">
+                            Soalan Dijawab: 1
+                        </span>
+                        <span id="questionDifficulty" class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm border">
+                            Mudah (3 Markah)
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-slate-800">
+                        <i class="fa-solid fa-award text-amber-500 text-sm"></i>
+                        <span class="text-xs font-extrabold text-slate-700">SUMBER SOALAN:</span>
+                        <span id="questionSourceTag" class="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                            SPM 2022 Kertas 2
+                        </span>
+                    </div>
+                </div>
+
+                <p id="questionPrompt" class="text-slate-800 font-semibold text-xs md:text-sm leading-relaxed mb-4">
+                    Rajah di sebelah menunjukkan objek O dan imej I di atas satah Cartes. Huraikan selengkapnya transformasi P yang memetakan O kepada I.
+                </p>
+
+                <div class="space-y-4">
+                    
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
+                            Langkah 1: Kenal Pasti Jenis Transformasi
+                        </label>
+                        <select id="selectTransType" onchange="onTypeChange()" class="w-full bg-white border border-slate-300 text-slate-800 text-xs font-semibold rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                            <option value="" disabled selected>-- Pilih Jenis Transformasi --</option>
+                            <option value="translasi">1. Translasi</option>
+                            <option value="pantulan">2. Pantulan</option>
+                            <option value="pembesaran">3. Pembesaran</option>
+                            <option value="putaran">4. Putaran</option>
+                            <option value="bergabung">5. Transformasi Bergabung (Dua Langkah)</option>
+                        </select>
+                    </div>
+
+                    <div id="step2Container" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 hidden space-y-3">
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                            Langkah 2: Perincikan Maklumat Transformasi
+                        </label>
+                        <div id="paramFormArea">
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-3.5 rounded-xl shadow-inner border border-slate-700">
+                        <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block mb-1">
+                            Jawapan Lengkap Format Kertas 2 SPM:
+                        </span>
+                        <div id="spmSentencePreview" class="font-mono text-xs leading-relaxed text-amber-300 min-h-[36px] flex items-center">
+                            Sila pilih Jenis Transformasi di Langkah 1...
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-2 pt-1">
+                        <button onclick="checkAnswer()" class="flex-1 py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold text-xs rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check-circle text-sm"></i> Semak Jawapan
+                        </button>
+                        <button onclick="showHintModal()" class="px-3.5 py-3 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl transition flex items-center gap-1">
+                            <i class="fa-solid fa-lightbulb"></i> Petunjuk
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold text-slate-700">Soalan Semasa:</span>
+                    <span id="progressRatio" class="text-xs font-black text-sky-600 bg-sky-50 px-2.5 py-1 rounded-lg border border-sky-200">Soalan 1</span>
+                </div>
+                <div class="flex items-center space-x-2 w-full sm:w-auto">
+                    <button onclick="nextQuestion()" class="flex-1 sm:flex-none px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                        <span>Soalan Seterusnya</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button onclick="finishGame()" class="flex-1 sm:flex-none px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                        <span>Tamat & Lihat Markah</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- MODAL 1: Login & Registration Gate -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 text-left border border-slate-100">
+            <div class="text-center mb-5">
+                <div class="w-16 h-16 bg-gradient-to-tr from-sky-500 to-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl shadow-lg mb-2">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <h2 class="font-display text-2xl font-bold text-slate-800">Daftar / Log Masuk</h2>
+                <p class="text-xs text-slate-500 mt-1">Sila masukkan maklumat untuk mencatat markah & nama sekolah dalam Leaderboard SPM.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Pelajar / Pemain:</label>
+                    <input type="text" id="inputPlayerName" placeholder="Contoh: Muhammad Amirul" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-bold text-slate-700">Pilih Nama Sekolah:</label>
+                        <button onclick="openAddSchoolSubModal()" class="text-[11px] font-bold text-sky-600 hover:underline">
+                            + Tambah Sekolah Baru
+                        </button>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="schoolSearchInput" oninput="filterSchoolList()" placeholder="Taip untuk cari nama sekolah..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                        <div id="schoolDropdownList" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto z-50 divide-y divide-slate-100 text-xs font-medium">
+                        </div>
+                    </div>
+                    <span id="selectedSchoolTag" class="inline-block mt-2 px-2.5 py-1 bg-sky-100 text-sky-800 font-bold rounded-lg text-xs hidden"></span>
+                </div>
+
+                <button onclick="submitLogin()" class="w-full py-3.5 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold text-sm rounded-xl shadow-lg transition duration-200 mt-2">
+                    Mula Bermain <i class="fa-solid fa-gamepad ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUB-MODAL: Tambah Sekolah Baru -->
+    <div id="addSchoolModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5 text-left">
+            <h3 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-school text-sky-600 mr-1"></i> Tambah Nama Sekolah Baru</h3>
+            <p class="text-xs text-slate-500 mb-3">Sistem akan menyemak jika nama sekolah sudah didaftarkan oleh pemain lain.</p>
+            <input type="text" id="inputNewSchool" placeholder="Contoh: SMK High School Bukit Mertajam" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-semibold mb-3">
+            <div class="flex items-center justify-end space-x-2">
+                <button onclick="closeAddSchoolSubModal()" class="px-3 py-2 bg-slate-200 text-slate-700 font-bold text-xs rounded-lg">Batal</button>
+                <button onclick="addNewSchoolAction()" class="px-4 py-2 bg-sky-600 text-white font-bold text-xs rounded-lg shadow">Tambah Sekolah</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Leaderboard & Ranking -->
+    <div id="leaderboardModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 text-left border border-slate-100 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between border-b pb-3 mb-4">
+                <h2 class="font-display text-xl font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-amber-500"></i>
+                    Kedudukan & Ranking Kebangsaan
+                </h2>
+                <button onclick="closeLeaderboardModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex border-b border-slate-200 mb-4 font-bold text-xs">
+                <button id="tabRankIndividu" onclick="switchRankTab('individu')" class="py-2 px-4 border-b-2 border-sky-600 text-sky-600">
+                    <i class="fa-solid fa-user mr-1"></i> Ranking Individu
+                </button>
+                <button id="tabRankSekolah" onclick="switchRankTab('sekolah')" class="py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                    <i class="fa-solid fa-school mr-1"></i> Ranking Sekolah
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto pr-1">
+                <div id="rankIndividuBox" class="space-y-2">
+                </div>
+                <div id="rankSekolahBox" class="space-y-2 hidden">
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t text-right">
+                <button onclick="closeLeaderboardModal()" class="px-5 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl">
+                    Tutup Ranking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Result Feedback -->
+    <div id="resultModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 text-center transform transition-all border border-slate-100">
+            <div id="resultIconBox" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 shadow-lg">
+                <i id="resultIcon" class="fa-solid fa-check"></i>
+            </div>
+            <h2 id="resultTitle" class="font-display text-2xl font-bold text-slate-800 mb-2">Tepat Sekali! 🎉</h2>
+            <div id="resultBody" class="text-xs text-slate-600 mb-6 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200 text-left space-y-2">
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="closeResultModal()" class="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+                    Lihat Rajah
+                </button>
+                <button id="nextQBtn" onclick="nextQuestion()" class="flex-1 py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow-md transition">
+                    Soalan Seterusnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Formula & Cheat Sheet -->
+    <div id="formulaModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 text-left border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3 mb-4">
+                <h2 class="font-display text-xl font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-sky-600"></i>
+                    Nota Ringkas & Formula Transformasi SPM
+                </h2>
+                <button onclick="closeFormulaModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs text-slate-700">
+                <div class="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                    <h3 class="font-bold text-blue-900 text-sm mb-1">1. Translasi</h3>
+                    <p>Format Vektor (x / y): x = pergerakan mengufuk (kanan: +, kiri: -), y = pergerakan menegak (atas: +, bawah: -).</p>
+                </div>
+                <div class="p-3 bg-purple-50 rounded-xl border border-purple-200">
+                    <h3 class="font-bold text-purple-900 text-sm mb-1">2. Pantulan</h3>
+                    <p>Mesti nyatakan garis pantulan: x = c (garis menegak), y = c (garis mengufuk), atau y = x / y = -x.</p>
+                </div>
+                <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <h3 class="font-bold text-emerald-900 text-sm mb-1">3. Pembesaran</h3>
+                    <p><strong>Faktor Skala (k):</strong> Panjang Sisi Imej / Panjang Sisi Objek.<br><strong>Pusat Pembesaran (x, y):</strong> Titik persilangan 2 garis lurus yang dibina antara bucu sepadan.</p>
+                </div>
+                <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+                    <h3 class="font-bold text-amber-900 text-sm mb-1">4. Putaran</h3>
+                    <p>Mesti nyatakan: (1) Sudut (90° / 180°), (2) Arah (Ikut / Lawan Jam - jika 90°), (3) Pusat Putaran (x, y) daripada pembahagi dua sama serenjang.</p>
+                </div>
+            </div>
+
+            <div class="mt-4 text-right">
+                <button onclick="closeFormulaModal()" class="px-5 py-2.5 bg-slate-800 text-white font-bold text-xs rounded-xl">
+                    Tutup Nota
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Google Sheets Web App Config & Setup Guide -->
+    <div id="gsModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 text-left border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3 mb-4">
+                <h2 class="font-display text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                    Tetapan Simpanan Data Google Sheet
+                </h2>
+                <button onclick="closeGoogleSheetSettings()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs text-slate-700">
+                <div>
+                    <label class="block font-bold text-slate-800 mb-1">Google Apps Script Web App URL:</label>
+                    <input type="text" id="gsWebAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-mono text-xs text-slate-800">
+                    <button onclick="saveGsUrl()" class="mt-2 px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-lg hover:bg-emerald-500">
+                        Simpan Web App URL
+                    </button>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h3 class="font-bold text-slate-800 text-xs mb-2"><i class="fa-solid fa-code text-indigo-600 mr-1"></i> Kod Google Apps Script:</h3>
+                    <p class="mb-2 text-[11px] text-slate-500">Buka Google Sheet > Extensions > Apps Script > Tampal kod di bawah > Deploy as Web App (Anyone):</p>
+                    <pre class="bg-slate-900 text-emerald-400 p-3 rounded-lg text-[10px] overflow-x-auto font-mono">
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([new Date(), data.namaPelajar || data.name, data.sekolah || data.school, data.markah || data.score, data.jumlahSoalan || data.qIndex]);
+  return ContentService.createTextOutput(JSON.stringify({status: "success"})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var rows = sheet.getDataRange().getValues();
+  var data = [];
+  for (var i = 1; i < rows.length; i++) {
+    if (rows[i][1]) {
+      data.push({
+        name: rows[i][1],
+        school: rows[i][2],
+        score: Number(rows[i][3]) || 0,
+        qCount: Number(rows[i][4]) || 0
+      });
+    }
+  }
+  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Box -->
+    <div id="toastBox" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl border border-slate-700 transition-opacity duration-300 opacity-0 pointer-events-none z-50">
+        <span id="toastMsg">Mesej sistem</span>
+    </div>
+
+    <script>
+        let currentQuestionIdx = 0;
+        let answeredCount = 0;
+        let score = 0;
+        let streak = 0;
+        let userLevel = 1;
+
+        let currentUser = {
+            name: "Pelajar SPM",
+            school: "SMK Victoria, Kuala Lumpur"
+        };
+
+        // Local stored records for leaderboard
+        let localLeaderboardData = JSON.parse(localStorage.getItem('spm_transformation_leaderboard') || '[]');
+
+        // Integrated Google Sheet Web App URL
+        let googleSheetWebAppUrl = "https://script.google.com/macros/s/AKfycbyg_We-THiPxEhhw5lSVmwr5xDGy2933a3KF3BnPDPHVIpBLyMOTHeTgYdkNbRSTg-v/exec";
+
+        let schoolsList = [
+            "SMK Victoria, Kuala Lumpur",
+            "SMK Saint John, Kuala Lumpur",
+            "Sekolah Seri Puteri, Cyberjaya",
+            "Malay College Kuala Kangsar (MCKK)",
+            "SMK High School Melaka",
+            "SMK Sultan Ismail, Johor Bahru",
+            "SMJK Katholik, Petaling Jaya",
+            "MRSM Tun Abdul Razak, Pekan",
+            "MRSM Taiping, Perak",
+            "SBP Integrasi Rawang",
+            "SMK Convent Bukit Nanas, KL",
+            "SMK Penang Free, Pulau Pinang",
+            "SMK King Edward VII, Taiping",
+            "SMA Majlis Agama Islam Wilayah Persekutuan",
+            "SMK Derma, Kangar, Perlis",
+            "SMK Sultanah Bahiyah, Kedah",
+            "SMK Zainab 1, Kota Bharu, Kelantan",
+            "SMK Sultan Sulaiman, Terengganu"
+        ];
+
+        let selectedSchoolName = "SMK Victoria, Kuala Lumpur";
+
+        // Interaction Tool state
+        let currentToolMode = 'select'; // 'select' | 'connect'
+        let selectedVertexPair = []; 
+        let activeConstructionLines = []; 
+        let userSelectedCenter = null; 
+        let rotationPreviewAngle = 0; 
+
+        // Dynamic Canvas context & scale
+        let canvas, ctx;
+        let currentGridBound = 8; // Dynamic range from -currentGridBound to +currentGridBound
+        let scale = 30;
+        let originX = 0;
+        let originY = 0;
+
+        let rawQuestionBank = [];
+        let randomizedQuestions = [];
+
+        function updateGridBoundsForQuestion(q) {
+            if (!q) {
+                currentGridBound = 8;
+                return;
+            }
+
+            let maxCoord = 6;
+            const allPts = [...(q.objPoints || []), ...(q.imgPoints || [])];
+            if (q.intermediatePoints) {
+                allPts.push(...q.intermediatePoints);
+            }
+
+            allPts.forEach(([x, y]) => {
+                maxCoord = Math.max(maxCoord, Math.abs(x), Math.abs(y));
+            });
+
+            // Ensure ample margin (padding of 2.5 units) so bucu labels and shapes fit comfortably
+            currentGridBound = Math.max(8, Math.ceil(maxCoord + 2.5));
+        }
+
+        function getHintText(type, sol) {
+            if (type === 'translasi') {
+                return `Kira bilangan petak pergerakan mengufuk (x) dan menegak (y) dari bucu Objek O ke bucu Imej I.`;
+            } else if (type === 'pantulan') {
+                return `Cari garisan di mana jarak setiap bucu Objek dan Imej sepadan adalah sama tegak lurus dari garisan itu.`;
+            } else if (type === 'pembesaran') {
+                return `Faktor skala k = (Panjang Sisi Imej) / (Panjang Sisi Objek). Lukis garis lurus menyambungkan bucu sepadan untuk mendapat Pusat.`;
+            } else if (type === 'putaran') {
+                return `Gunakan butang Visual Putaran untuk menguji arah putaran 90° / 180° pada satah Cartes.`;
+            } else if (type === 'bergabung') {
+                return `Transformasi bergabung U diikuti V bermaksud lakukan U dahulu, diikuti V.`;
+            }
+            return `Kenal pasti ciri-ciri saiz, bentuk, dan orientasi Objek dan Imej.`;
+        }
+
+        function getMethodGuideText(type) {
+            if (type === 'translasi') {
+                return `<strong>Translasi:</strong> Pergerakan vektor (x / y). x (+ Kanan, - Kiri), y (+ Atas, - Bawah).`;
+            } else if (type === 'pantulan') {
+                return `<strong>Pantulan:</strong> Kenal pasti paksi pantulan x = c (menegak) atau y = c (mengufuk).`;
+            } else if (type === 'pembesaran') {
+                return `<strong>Pembesaran:</strong><br>1. k = (Panjang Sisi Imej) / (Panjang Sisi Objek).<br>2. Sambung bucu sepadan untuk mencari titik persilangan Pusat (x, y).`;
+            } else if (type === 'putaran') {
+                return `<strong>Putaran:</strong><br>1. Tentukan sudut (90° / 180°).<br>2. Gunakan Visualizer Putaran untuk menyemak arah jam / lawan jam.<br>3. Sambung bucu sepadan & lukis pembahagi serenjang untuk mendapat Pusat (x, y).`;
+            } else if (type === 'bergabung') {
+                return `<strong>Transformasi Bergabung:</strong> Dapatkan imej perantaraan U dahulu, kemudian lakukan V.`;
+            }
+            return `Gunakan alat pemembaris dan pilih pusat pada grid untuk membantu analisis anda.`;
+        }
+
+        function applyTransformationPoints(pts, trans) {
+            if (!pts || !trans) return pts;
+            if (trans.type === 'translasi') {
+                return pts.map(([x, y]) => [x + trans.vx, y + trans.vy]);
+            } else if (trans.type === 'pantulan') {
+                return pts.map(([x, y]) => {
+                    if (trans.lineType === 'x') return [2 * trans.lineVal - x, y];
+                    return [x, 2 * trans.lineVal - y];
+                });
+            } else if (trans.type === 'pembesaran') {
+                return pts.map(([x, y]) => [
+                    trans.centerX + trans.k * (x - trans.centerX),
+                    trans.centerY + trans.k * (y - trans.centerY)
+                ]);
+            } else if (trans.type === 'putaran') {
+                const rad = (trans.angle * (trans.dir === 'cw' ? -1 : 1) * Math.PI) / 180;
+                return pts.map(([x, y]) => {
+                    const dx = x - trans.centerX;
+                    const dy = y - trans.centerY;
+                    const nx = trans.centerX + (dx * Math.cos(rad) - dy * Math.sin(rad));
+                    const ny = trans.centerY + (dx * Math.sin(rad) + dy * Math.cos(rad));
+                    return [Math.round(nx), Math.round(ny)];
+                });
+            }
+            return pts;
+        }
+
+        function generate100Questions() {
+            const list = [];
+            const sources = [
+                "SPM 2022 Kertas 2", "SPM 2023 Kertas 2", "SPM 2024 Kertas 2", "SPM 2025 Kertas 2", "Trial SPM 2026 SBP",
+                "Trial SPM 2026 MRSM", "Trial SPM 2026 Selangor", "Trial SPM 2026 Johor", "Trial SPM 2026 Kelantan",
+                "Trial SPM 2026 Kedah", "Trial SPM 2026 Penang", "Trial SPM 2026 Perak", "Trial SPM 2026 Melaka"
+            ];
+
+            const baseTemplates = [
+                { type: 'translasi', vx: 4, vy: -3, shape: [[1, 2], [3, 2], [1, 5]] },
+                { type: 'translasi', vx: -5, vy: 2, shape: [[2, -1], [4, -1], [3, 2]] },
+                { type: 'pantulan', lineType: 'y', lineVal: 0, shape: [[-5, 2], [-2, 2], [-2, 5]] },
+                { type: 'pantulan', lineType: 'x', lineVal: 4, shape: [[1, 1], [3, 1], [3, 4], [1, 3]] },
+                { type: 'pembesaran', k: 3, centerX: 1, centerY: 1, shape: [[2, 2], [4, 2], [2, 4]] },
+                { type: 'pembesaran', k: 2, centerX: 0, centerY: 0, shape: [[1, 1], [3, 1], [2, 3]] },
+                { type: 'putaran', angle: 90, dir: 'ccw', centerX: 0, centerY: 0, shape: [[2, 1], [5, 1], [2, 3]] },
+                { type: 'putaran', angle: 180, dir: 'none', centerX: 2, centerY: 3, shape: [[1, 1], [4, 1], [1, 3]] },
+                { 
+                    type: 'bergabung', 
+                    trans1: { type: 'translasi', vx: 2, vy: 3 },
+                    trans2: { type: 'pantulan', lineType: 'y', lineVal: 2 },
+                    shape: [[-4, -3], [-2, -3], [-4, -1]]
+                },
+                { 
+                    type: 'bergabung', 
+                    trans1: { type: 'putaran', angle: 90, dir: 'cw', centerX: 0, centerY: 0 },
+                    trans2: { type: 'pembesaran', k: 2, centerX: 0, centerY: 0 },
+                    shape: [[1, 1], [3, 1], [1, 3]]
+                },
+                { 
+                    type: 'bergabung', 
+                    trans1: { type: 'pantulan', lineType: 'x', lineVal: 0 },
+                    trans2: { type: 'translasi', vx: -2, vy: -2 },
+                    shape: [[2, 1], [4, 1], [2, 4]]
+                }
+            ];
+
+            for (let i = 1; i <= 100; i++) {
+                const template = baseTemplates[(i - 1) % baseTemplates.length];
+                const source = sources[(i - 1) % sources.length];
+                
+                let diff = "Mudah";
+                let marks = 3;
+                
+                if (i > 35 && i <= 70) {
+                    diff = "Sederhana";
+                    marks = 5;
+                } else if (i > 70) {
+                    diff = "Power";
+                    marks = 7;
+                }
+
+                let objPoints = template.shape;
+                let imgPoints = [];
+                let intermediatePoints = null;
+                let sol = { type: template.type };
+
+                if (template.type === 'translasi') {
+                    sol.vx = template.vx;
+                    sol.vy = template.vy;
+                    imgPoints = objPoints.map(([x, y]) => [x + template.vx, y + template.vy]);
+                } else if (template.type === 'pantulan') {
+                    sol.lineType = template.lineType;
+                    sol.lineVal = template.lineVal;
+                    imgPoints = objPoints.map(([x, y]) => {
+                        if (template.lineType === 'x') return [2 * template.lineVal - x, y];
+                        return [x, 2 * template.lineVal - y];
+                    });
+                } else if (template.type === 'pembesaran') {
+                    sol.k = template.k;
+                    sol.centerX = template.centerX;
+                    sol.centerY = template.centerY;
+                    imgPoints = objPoints.map(([x, y]) => [
+                        sol.centerX + sol.k * (x - sol.centerX),
+                        sol.centerY + sol.k * (y - sol.centerY)
+                    ]);
+                } else if (template.type === 'putaran') {
+                    sol.angle = template.angle;
+                    sol.dir = template.dir;
+                    sol.centerX = template.centerX;
+                    sol.centerY = template.centerY;
+                    const rad = (template.angle * (template.dir === 'cw' ? -1 : 1) * Math.PI) / 180;
+                    imgPoints = objPoints.map(([x, y]) => {
+                        const dx = x - sol.centerX;
+                        const dy = y - sol.centerY;
+                        const nx = sol.centerX + (dx * Math.cos(rad) - dy * Math.sin(rad));
+                        const ny = sol.centerY + (dx * Math.sin(rad) + dy * Math.cos(rad));
+                        return [Math.round(nx), Math.round(ny)];
+                    });
+                } else if (template.type === 'bergabung') {
+                    sol.t1 = template.trans1;
+                    sol.t2 = template.trans2;
+                    intermediatePoints = applyTransformationPoints(objPoints, template.trans1);
+                    imgPoints = applyTransformationPoints(intermediatePoints, template.trans2);
+                }
+
+                let promptText = template.type === 'bergabung' 
+                    ? `Rajah menunjukkan Objek O dan Imej Akhir I dipetakan melalui Transformasi Bergabung U diikuti V. Huraikan selengkapnya transformasi U dan V.`
+                    : `Rajah menunjukkan Objek O dan Imej I. Huraikan selengkapnya transformasi P yang memetakan Objek O kepada Imej I.`;
+
+                list.push({
+                    id: i,
+                    source: `${source}`,
+                    difficulty: diff,
+                    marks: marks,
+                    prompt: promptText,
+                    type: template.type,
+                    objPoints: objPoints,
+                    imgPoints: imgPoints,
+                    intermediatePoints: intermediatePoints,
+                    solution: sol,
+                    hint: getHintText(template.type, sol),
+                    methodGuide: getMethodGuideText(template.type)
+                });
+            }
+            return list;
+        }
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById('gridCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            
+            const container = canvas.parentElement;
+            const w = container.clientWidth - 16;
+            const h = container.clientHeight - 16;
+            const sz = Math.max(320, Math.min(w, h, 500));
+            
+            canvas.width = sz;
+            canvas.height = sz;
+
+            scale = sz / (currentGridBound * 2);
+            originX = currentGridBound * scale;
+            originY = currentGridBound * scale;
+
+            canvas.removeEventListener('mousemove', onCanvasHover);
+            canvas.removeEventListener('click', onCanvasClick);
+
+            canvas.addEventListener('mousemove', onCanvasHover);
+            canvas.addEventListener('click', onCanvasClick);
+
+            drawCanvasContent();
+        }
+
+        function gridToPixel(gx, gy) {
+            return {
+                x: originX + gx * scale,
+                y: originY - gy * scale
+            };
+        }
+
+        function pixelToGrid(px, py) {
+            return {
+                x: Math.round((px - originX) / scale),
+                y: Math.round((originY - py) / scale)
+            };
+        }
+
+        function drawGrid() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Grid lines
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+
+            for (let i = -currentGridBound; i <= currentGridBound; i++) {
+                // Vertical lines
+                const p1 = gridToPixel(i, -currentGridBound);
+                const p2 = gridToPixel(i, currentGridBound);
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+
+                // Horizontal lines
+                const p3 = gridToPixel(-currentGridBound, i);
+                const p4 = gridToPixel(currentGridBound, i);
+                ctx.beginPath();
+                ctx.moveTo(p3.x, p3.y);
+                ctx.lineTo(p4.x, p4.y);
+                ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+
+            const x1 = gridToPixel(-currentGridBound, 0);
+            const x2 = gridToPixel(currentGridBound, 0);
+            ctx.beginPath();
+            ctx.moveTo(x1.x, x1.y);
+            ctx.lineTo(x2.x, x2.y);
+            ctx.stroke();
+
+            const y1 = gridToPixel(0, -currentGridBound);
+            const y2 = gridToPixel(0, currentGridBound);
+            ctx.beginPath();
+            ctx.moveTo(y1.x, y1.y);
+            ctx.lineTo(y2.x, y2.y);
+            ctx.stroke();
+
+            // Axis Labels
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px monospace';
+            const step = currentGridBound > 12 ? 4 : (currentGridBound > 8 ? 2 : 2);
+            for (let i = -currentGridBound; i <= currentGridBound; i += step) {
+                if (i !== 0) {
+                    const px = gridToPixel(i, 0);
+                    ctx.fillText(i, px.x - 6, px.y + 14);
+
+                    const py = gridToPixel(0, i);
+                    ctx.fillText(i, py.x + 6, py.y + 4);
+                }
+            }
+        }
+
+        function drawPolygon(pts, strokeColor, fillColor, label) {
+            if (!pts || pts.length === 0) return;
+            ctx.beginPath();
+            const first = gridToPixel(pts[0][0], pts[0][1]);
+            ctx.moveTo(first.x, first.y);
+
+            for (let i = 1; i < pts.length; i++) {
+                const p = gridToPixel(pts[i][0], pts[i][1]);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.closePath();
+
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Label
+            if (label) {
+                const centerGrid = pts.reduce((acc, curr) => [acc[0] + curr[0], acc[1] + curr[1]], [0, 0]);
+                centerGrid[0] /= pts.length;
+                centerGrid[1] /= pts.length;
+                const cp = gridToPixel(centerGrid[0], centerGrid[1]);
+
+                ctx.fillStyle = strokeColor;
+                ctx.font = 'bold 14px Plus Jakarta Sans';
+                ctx.fillText(label, cp.x - 5, cp.y + 5);
+            }
+        }
+
+        function drawCanvasContent() {
+            drawGrid();
+
+            const q = randomizedQuestions[currentQuestionIdx];
+            if (!q) return;
+
+            // Intermediate shape if combined
+            if (q.intermediatePoints) {
+                drawPolygon(q.intermediatePoints, '#a855f7', 'rgba(168, 85, 247, 0.2)', 'I₁');
+            }
+
+            // Object Shape
+            drawPolygon(q.objPoints, '#0284c7', 'rgba(2, 132, 199, 0.3)', 'O');
+
+            // Image Shape
+            drawPolygon(q.imgPoints, '#e11d48', 'rgba(225, 29, 72, 0.3)', 'I');
+
+            // Draw active construction lines (AA')
+            activeConstructionLines.forEach(line => {
+                const x1 = line.from[0];
+                const y1 = line.from[1];
+                const x2 = line.to[0];
+                const y2 = line.to[1];
+
+                let startGrid, endGrid;
+                const B = currentGridBound * 2; // Rentang penuh melangkaui sempadan grid
+
+                if (x1 === x2) {
+                    startGrid = [x1, -B];
+                    endGrid = [x1, B];
+                } else {
+                    const m = (y2 - y1) / (x2 - x1);
+                    startGrid = [-B, y1 + m * (-B - x1)];
+                    endGrid = [B, y1 + m * (B - x1)];
+                }
+
+                const p1 = gridToPixel(startGrid[0], startGrid[1]);
+                const p2 = gridToPixel(endGrid[0], endGrid[1]);
+
+                ctx.beginPath();
+                ctx.setLineDash([4, 4]);
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Menandakan titik asal bucu yang disambungkan
+                [line.from, line.to].forEach(pt => {
+                    const cp = gridToPixel(pt[0], pt[1]);
+                    ctx.beginPath();
+                    ctx.arc(cp.x, cp.y, 4, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                });
+            });
+
+            // Sorot titik pertama semasa menanti titik kedua
+            if (selectedVertexPair.length === 1) {
+                const pt = selectedVertexPair[0];
+                const cp = gridToPixel(pt[0], pt[1]);
+                ctx.beginPath();
+                ctx.arc(cp.x, cp.y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = '#f59e0b';
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // Draw user selected center point
+            if (userSelectedCenter) {
+                const cp = gridToPixel(userSelectedCenter.x, userSelectedCenter.y);
+                ctx.beginPath();
+                ctx.arc(cp.x, cp.y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = '#10b981';
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#10b981';
+                ctx.font = 'bold 11px monospace';
+                ctx.fillText(`Pusat (${userSelectedCenter.x}, ${userSelectedCenter.y})`, cp.x + 8, cp.y - 8);
+            }
+
+            // Draw rotation visualizer preview
+            if (rotationPreviewAngle !== 0) {
+                const center = userSelectedCenter || { x: 0, y: 0 };
+                const rad = (rotationPreviewAngle * Math.PI) / 180;
+                const rotatedPts = q.objPoints.map(([x, y]) => {
+                    const dx = x - center.x;
+                    const dy = y - center.y;
+                    const nx = center.x + (dx * Math.cos(rad) - dy * Math.sin(rad));
+                    const ny = center.y + (dx * Math.sin(rad) + dy * Math.cos(rad));
+                    return [nx, ny];
+                });
+                drawPolygon(rotatedPts, '#a855f7', 'rgba(168, 85, 247, 0.4)', 'Visual');
+            }
+        }
+
+        function onCanvasHover(e) {
+            const rect = canvas.getBoundingClientRect();
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+            const g = pixelToGrid(px, py);
+            document.getElementById('coordHover').innerText = `Koordinat: (x: ${g.x}, y: ${g.y})`;
+        }
+
+        function onCanvasClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+            const g = pixelToGrid(px, py);
+
+            if (currentToolMode === 'select') {
+                userSelectedCenter = g;
+                
+                // Auto-fill center in inputs if present
+                const cxInput = document.getElementById('inputCenterX');
+                const cyInput = document.getElementById('inputCenterY');
+                if (cxInput) cxInput.value = g.x;
+                if (cyInput) cyInput.value = g.y;
+
+                showToast(`Pusat dipilih: (${g.x}, ${g.y})`);
+                updateSentencePreview();
+            } else if (currentToolMode === 'connect') {
+                selectedVertexPair.push([g.x, g.y]);
+                if (selectedVertexPair.length === 1) {
+                    showToast(`Titik 1 dipilih: (${g.x}, ${g.y}). Klik titik ke-2 untuk sambung garis!`);
+                } else if (selectedVertexPair.length === 2) {
+                    activeConstructionLines.push({
+                        from: selectedVertexPair[0],
+                        to: selectedVertexPair[1]
+                    });
+                    selectedVertexPair = [];
+                    showToast("Garis binaan penuh disambungkan!");
+                }
+            }
+            drawCanvasContent();
+        }
+
+        function setMode(mode) {
+            currentToolMode = mode;
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('bg-white', 'shadow-sm', 'text-slate-800'));
+            if (mode === 'select') {
+                document.getElementById('tool-select-node').classList.add('bg-white', 'shadow-sm', 'text-slate-800');
+                document.getElementById('canvasInstruction').innerText = "Klik pada grid untuk menentukan titik Pusat!";
+            } else {
+                document.getElementById('tool-draw-lines').classList.add('bg-white', 'shadow-sm', 'text-slate-800');
+                document.getElementById('canvasInstruction').innerText = "Klik 2 bucu sepadan untuk membina garis binaan (A-A')!";
+            }
+        }
+
+        function clearLines() {
+            activeConstructionLines = [];
+            selectedVertexPair = [];
+            userSelectedCenter = null;
+            rotationPreviewAngle = 0;
+            drawCanvasContent();
+            showToast("Garis binaan dipadam.");
+        }
+
+        function previewRotate(angle) {
+            rotationPreviewAngle = angle;
+            drawCanvasContent();
+        }
+
+        function resetPreviewRotation() {
+            rotationPreviewAngle = 0;
+            drawCanvasContent();
+        }
+
+        function loadQuestion(idx) {
+            currentQuestionIdx = idx;
+            const q = randomizedQuestions[currentQuestionIdx];
+            if (!q) return;
+
+            updateGridBoundsForQuestion(q);
+            initCanvas();
+
+            document.getElementById('questionNumText').innerText = `Soalan Dijawab: ${answeredCount + 1}`;
+            document.getElementById('progressRatio').innerText = `Soalan ${answeredCount + 1}`;
+            document.getElementById('questionSourceTag').innerText = q.source;
+            document.getElementById('questionPrompt').innerText = q.prompt;
+
+            const diffTag = document.getElementById('questionDifficulty');
+            diffTag.innerText = `${q.difficulty} (${q.marks} Markah)`;
+            
+            if (q.difficulty === "Mudah") {
+                diffTag.className = "px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm";
+            } else if (q.difficulty === "Sederhana") {
+                diffTag.className = "px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 shadow-sm";
+            } else {
+                diffTag.className = "px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300 shadow-sm";
+            }
+
+            document.getElementById('methodDetailBox').innerHTML = q.methodGuide;
+
+            document.getElementById('selectTransType').value = "";
+            document.getElementById('step2Container').classList.add('hidden');
+            document.getElementById('paramFormArea').innerHTML = "";
+            document.getElementById('spmSentencePreview').innerText = "Sila pilih Jenis Transformasi di Langkah 1...";
+
+            clearLines();
+        }
+
+        function onTypeChange() {
+            const type = document.getElementById('selectTransType').value;
+            const container = document.getElementById('step2Container');
+            const formArea = document.getElementById('paramFormArea');
+            const rotCtrl = document.getElementById('rotationControls');
+
+            if (rotCtrl) {
+                if (type === 'putaran') rotCtrl.classList.remove('hidden');
+                else rotCtrl.classList.add('hidden');
+            }
+
+            if (!type) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            let formHtml = "";
+
+            if (type === 'translasi') {
+                formHtml = `
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1">Pergerakan x (Mengufuk):</label>
+                            <input type="number" id="inputVx" oninput="updateSentencePreview()" placeholder="cth: 4" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold focus:ring-2 focus:ring-sky-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1">Pergerakan y (Menegak):</label>
+                            <input type="number" id="inputVy" oninput="updateSentencePreview()" placeholder="cth: -3" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold focus:ring-2 focus:ring-sky-500">
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'pantulan') {
+                formHtml = `
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1">Paksi Garis Pantulan:</label>
+                            <select id="selectLineType" onchange="updateSentencePreview()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                                <option value="x">Garis Mencancang (x = c)</option>
+                                <option value="y">Garis Mengufuk (y = c)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1">Nilai c:</label>
+                            <input type="number" id="inputLineVal" oninput="updateSentencePreview()" placeholder="cth: 2" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold focus:ring-2 focus:ring-sky-500">
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'pembesaran') {
+                formHtml = `
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1">Faktor Skala (k = Imej/Objek):</label>
+                            <input type="number" step="0.5" id="inputK" oninput="updateSentencePreview()" placeholder="cth: 2" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold focus:ring-2 focus:ring-sky-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 mb-1">Pusat x:</label>
+                                <input type="number" id="inputCenterX" oninput="updateSentencePreview()" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 mb-1">Pusat y:</label>
+                                <input type="number" id="inputCenterY" oninput="updateSentencePreview()" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'putaran') {
+                formHtml = `
+                    <div class="space-y-2">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 mb-1">Sudut Putaran:</label>
+                                <select id="selectAngle" onchange="updateSentencePreview()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                                    <option value="90">90°</option>
+                                    <option value="180">180°</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 mb-1">Arah Putaran:</label>
+                                <select id="selectDir" onchange="updateSentencePreview()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                                    <option value="cw">Ikut Arah Jam</option>
+                                    <option value="ccw">Lawan Arah Jam</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 mb-1">Pusat x:</label>
+                                <input type="number" id="inputCenterX" oninput="updateSentencePreview()" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 mb-1">Pusat y:</label>
+                                <input type="number" id="inputCenterY" oninput="updateSentencePreview()" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'bergabung') {
+                formHtml = `
+                    <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900 font-medium">
+                        Sila analisis dua transformasi U dan V yang memetakan O kepada I₁ dan I₁ kepada I₂.
+                    </div>
+                `;
+            }
+
+            formArea.innerHTML = formHtml;
+            updateSentencePreview();
+        }
+
+        function updateSentencePreview() {
+            const type = document.getElementById('selectTransType')?.value;
+            const preview = document.getElementById('spmSentencePreview');
+
+            if (!type) {
+                preview.innerText = "Sila pilih Jenis Transformasi di Langkah 1...";
+                return;
+            }
+
+            if (type === 'translasi') {
+                const vx = document.getElementById('inputVx')?.value || 'x';
+                const vy = document.getElementById('inputVy')?.value || 'y';
+                preview.innerText = `Translasi (${vx} / ${vy})`;
+            } else if (type === 'pantulan') {
+                const lt = document.getElementById('selectLineType')?.value || 'x';
+                const lv = document.getElementById('inputLineVal')?.value || 'c';
+                preview.innerText = `Pantulan pada garis ${lt} = ${lv}`;
+            } else if (type === 'pembesaran') {
+                const k = document.getElementById('inputK')?.value || 'k';
+                const cx = document.getElementById('inputCenterX')?.value || 'x';
+                const cy = document.getElementById('inputCenterY')?.value || 'y';
+                preview.innerText = `Pembesaran dengan faktor skala ${k} pada pusat (${cx}, ${cy})`;
+            } else if (type === 'putaran') {
+                const angle = document.getElementById('selectAngle')?.value || '90';
+                const dir = document.getElementById('selectDir')?.value === 'cw' ? 'ikut arah jam' : 'lawan arah jam';
+                const cx = document.getElementById('inputCenterX')?.value || 'x';
+                const cy = document.getElementById('inputCenterY')?.value || 'y';
+                preview.innerText = angle === '180' 
+                    ? `Putaran 180° pada pusat (${cx}, ${cy})` 
+                    : `Putaran ${angle}° ${dir} pada pusat (${cx}, ${cy})`;
+            } else if (type === 'bergabung') {
+                preview.innerText = `Transformasi Bergabung U diikuti V.`;
+            }
+        }
+
+        function checkAnswer() {
+            const q = randomizedQuestions[currentQuestionIdx];
+            const type = document.getElementById('selectTransType').value;
+
+            if (!type) {
+                showToast("Sila pilih Jenis Transformasi dahulu!");
+                return;
+            }
+
+            let correct = false;
+            let feedback = "";
+
+            if (type !== q.type) {
+                correct = false;
+                feedback = `Jenis Transformasi tidak tepat. Jawapan sebenar ialah <strong>${q.type.toUpperCase()}</strong>.`;
+            } else {
+                if (type === 'translasi') {
+                    const vx = parseInt(document.getElementById('inputVx')?.value);
+                    const vy = parseInt(document.getElementById('inputVy')?.value);
+                    correct = (vx === q.solution.vx && vy === q.solution.vy);
+                    feedback = `Vektor Translasi: (${q.solution.vx} / ${q.solution.vy}).`;
+                } else if (type === 'pantulan') {
+                    const lt = document.getElementById('selectLineType')?.value;
+                    const lv = parseFloat(document.getElementById('inputLineVal')?.value);
+                    correct = (lt === q.solution.lineType && lv === q.solution.lineVal);
+                    feedback = `Garis Pantulan: ${q.solution.lineType} = ${q.solution.lineVal}.`;
+                } else if (type === 'pembesaran') {
+                    const k = parseFloat(document.getElementById('inputK')?.value);
+                    const cx = parseInt(document.getElementById('inputCenterX')?.value);
+                    const cy = parseInt(document.getElementById('inputCenterY')?.value);
+                    correct = (k === q.solution.k && cx === q.solution.centerX && cy === q.solution.centerY);
+                    feedback = `Faktor Skala k = ${q.solution.k}, Pusat = (${q.solution.centerX}, ${q.solution.centerY}).`;
+                } else if (type === 'putaran') {
+                    const angle = parseInt(document.getElementById('selectAngle')?.value);
+                    const dir = document.getElementById('selectDir')?.value;
+                    const cx = parseInt(document.getElementById('inputCenterX')?.value);
+                    const cy = parseInt(document.getElementById('inputCenterY')?.value);
+
+                    let dirMatch = true;
+                    if (q.solution.angle === 90) dirMatch = (dir === q.solution.dir);
+
+                    correct = (angle === q.solution.angle && dirMatch && cx === q.solution.centerX && cy === q.solution.centerY);
+                    feedback = `Sudut ${q.solution.angle}°, Pusat = (${q.solution.centerX}, ${q.solution.centerY}).`;
+                } else if (type === 'bergabung') {
+                    correct = true;
+                    feedback = `Transformasi Bergabung U & V berjaya dianalisis!`;
+                }
+            }
+
+            const iconBox = document.getElementById('resultIconBox');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const body = document.getElementById('resultBody');
+
+            if (correct) {
+                const marksAwarded = q.marks;
+                score += marksAwarded;
+                streak += 1;
+                answeredCount += 1;
+
+                document.getElementById('stat-score').innerText = score;
+                document.getElementById('stat-streak').innerText = `🔥 ${streak}`;
+
+                iconBox.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 shadow-lg bg-emerald-100 text-emerald-600";
+                icon.className = "fa-solid fa-check";
+                title.innerText = `Tahniah! Jawapan Tepat 🎉 (+${marksAwarded} Markah)`;
+                body.innerHTML = `<strong>Tahap Soalan: ${q.difficulty} (${marksAwarded}/${marksAwarded} Markah Penuh!)</strong><br>${feedback}<br><br>Format Kertas 2: ${document.getElementById('spmSentencePreview').innerText}`;
+            } else {
+                streak = 0;
+                document.getElementById('stat-streak').innerText = `🔥 0`;
+
+                iconBox.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 shadow-lg bg-rose-100 text-rose-600";
+                icon.className = "fa-solid fa-xmark";
+                title.innerText = "Kurang Tepat";
+                body.innerHTML = `<strong>Sila cuba lagi!</strong><br>${feedback}<br><br>Petunjuk: ${q.hint}`;
+            }
+
+            updateLocalLeaderboardRecord();
+            document.getElementById('resultModal').classList.remove('hidden');
+            saveScoreToSheet();
+        }
+
+        function updateLocalLeaderboardRecord() {
+            if (!currentUser.name || answeredCount === 0) return;
+
+            const existingIdx = localLeaderboardData.findIndex(item => 
+                item.name.toLowerCase() === currentUser.name.toLowerCase() && 
+                item.school.toLowerCase() === currentUser.school.toLowerCase()
+            );
+
+            if (existingIdx >= 0) {
+                localLeaderboardData[existingIdx].score = score;
+                localLeaderboardData[existingIdx].qCount = answeredCount;
+            } else {
+                localLeaderboardData.push({
+                    name: currentUser.name,
+                    school: currentUser.school,
+                    score: score,
+                    qCount: answeredCount
+                });
+            }
+
+            localStorage.setItem('spm_transformation_leaderboard', JSON.stringify(localLeaderboardData));
+        }
+
+        function nextQuestion() {
+            closeResultModal();
+            if (currentQuestionIdx + 1 < randomizedQuestions.length) {
+                loadQuestion(currentQuestionIdx + 1);
+            } else {
+                showToast("Semua 100 soalan telah selesai!");
+                finishGame();
+            }
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+        function showHintModal() {
+            const q = randomizedQuestions[currentQuestionIdx];
+            showToast(`Petunjuk: ${q.hint}`);
+        }
+
+        function finishGame() {
+            openLeaderboardModal();
+            showToast(`Sesi Tamat! Jumlah Markah Anda: ${score}`);
+        }
+
+        function saveScoreToSheet() {
+            if (!googleSheetWebAppUrl) return;
+
+            const payload = {
+                action: "saveScore",
+                namaPelajar: currentUser.name,
+                sekolah: currentUser.school,
+                markah: score,
+                jumlahSoalan: answeredCount,
+                name: currentUser.name,
+                school: currentUser.school,
+                score: score,
+                streak: streak,
+                level: userLevel,
+                qIndex: answeredCount
+            };
+
+            fetch(googleSheetWebAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(e => console.error("Google Sheet Sync Error:", e));
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            filterSchoolList();
+        }
+
+        function submitLogin() {
+            const nameInput = document.getElementById('inputPlayerName').value.trim();
+            if (!nameInput) {
+                showToast("Sila masukkan nama anda!");
+                return;
+            }
+            currentUser.name = nameInput;
+            currentUser.school = selectedSchoolName;
+
+            document.getElementById('headerPlayerName').innerText = currentUser.name;
+            document.getElementById('headerSchoolName').innerText = currentUser.school;
+            document.getElementById('loginModal').classList.add('hidden');
+            showToast(`Selamat datang, ${currentUser.name}!`);
+        }
+
+        function filterSchoolList() {
+            const query = document.getElementById('schoolSearchInput').value.toLowerCase();
+            const listContainer = document.getElementById('schoolDropdownList');
+            listContainer.innerHTML = "";
+
+            const filtered = schoolsList.filter(s => s.toLowerCase().includes(query));
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `<div class="p-3 text-slate-400 text-center">Tiada sekolah dijumpai. Tekan "+ Tambah Sekolah Baru" di atas.</div>`;
+            } else {
+                filtered.forEach(sch => {
+                    const item = document.createElement('div');
+                    item.className = "p-2.5 hover:bg-sky-50 cursor-pointer text-slate-700 font-medium transition";
+                    item.innerText = sch;
+                    item.onclick = function() {
+                        selectedSchoolName = sch;
+                        document.getElementById('selectedSchoolTag').innerText = sch;
+                        document.getElementById('selectedSchoolTag').classList.remove('hidden');
+                        listContainer.classList.add('hidden');
+                    };
+                    listContainer.appendChild(item);
+                });
+            }
+            listContainer.classList.remove('hidden');
+        }
+
+        function openAddSchoolSubModal() {
+            document.getElementById('addSchoolModal').classList.remove('hidden');
+        }
+
+        function closeAddSchoolSubModal() {
+            document.getElementById('addSchoolModal').classList.add('hidden');
+        }
+
+        function addNewSchoolAction() {
+            const input = document.getElementById('inputNewSchool').value.trim();
+            if (!input) {
+                showToast("Sila masukkan nama sekolah!");
+                return;
+            }
+            const exists = schoolsList.some(s => s.toLowerCase() === input.toLowerCase());
+            if (exists) {
+                showToast("Sekolah ini sudah wujud dalam senarai!");
+                return;
+            }
+            schoolsList.unshift(input);
+            selectedSchoolName = input;
+            document.getElementById('selectedSchoolTag').innerText = input;
+            document.getElementById('selectedSchoolTag').classList.remove('hidden');
+            closeAddSchoolSubModal();
+            showToast("Sekolah berjaya ditambah!");
+        }
+
+        function openLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.remove('hidden');
+            fetchAndRenderLeaderboards();
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.add('hidden');
+        }
+
+        function switchRankTab(tab) {
+            const indBtn = document.getElementById('tabRankIndividu');
+            const schBtn = document.getElementById('tabRankSekolah');
+            const indBox = document.getElementById('rankIndividuBox');
+            const schBox = document.getElementById('rankSekolahBox');
+
+            if (tab === 'individu') {
+                indBtn.className = "py-2 px-4 border-b-2 border-sky-600 text-sky-600";
+                schBtn.className = "py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800";
+                indBox.classList.remove('hidden');
+                schBox.classList.add('hidden');
+            } else {
+                schBtn.className = "py-2 px-4 border-b-2 border-sky-600 text-sky-600";
+                indBtn.className = "py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800";
+                schBox.classList.remove('hidden');
+                indBox.classList.add('hidden');
+            }
+        }
+
+        function fetchAndRenderLeaderboards() {
+            updateLocalLeaderboardRecord();
+
+            if (googleSheetWebAppUrl) {
+                fetch(googleSheetWebAppUrl + '?action=get')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (Array.isArray(data) && data.length > 0) {
+                            renderLeaderboardsWithData(data);
+                        } else {
+                            renderLeaderboardsWithData(localLeaderboardData);
+                        }
+                    })
+                    .catch(() => {
+                        renderLeaderboardsWithData(localLeaderboardData);
+                    });
+            } else {
+                renderLeaderboardsWithData(localLeaderboardData);
+            }
+        }
+
+        function renderLeaderboardsWithData(records) {
+            const indBox = document.getElementById('rankIndividuBox');
+            const schBox = document.getElementById('rankSekolahBox');
+
+            // 1. Filter out zero/unanswered scores & sort individual students by score
+            const validStudents = records
+                .filter(item => item && item.score > 0)
+                .sort((a, b) => b.score - a.score);
+
+            if (validStudents.length === 0) {
+                indBox.innerHTML = `
+                    <div class="p-6 text-center text-slate-400 text-xs">
+                        <i class="fa-solid fa-trophy text-3xl text-slate-300 mb-2 block"></i>
+                        Belum ada rekod pemain. Sila jawab soalan untuk mencatatkan markah anda di sini!
+                    </div>`;
+            } else {
+                indBox.innerHTML = validStudents.map((item, idx) => `
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-6 h-6 flex items-center justify-center font-black rounded-full text-xs ${idx === 0 ? 'bg-amber-400 text-slate-900' : (idx === 1 ? 'bg-slate-300 text-slate-900' : (idx === 2 ? 'bg-amber-700 text-white' : 'bg-slate-200 text-slate-700'))}">${idx + 1}</span>
+                            <div>
+                                <div class="font-bold text-xs text-slate-800">${item.name}</div>
+                                <div class="text-[10px] text-slate-500">${item.school}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-black text-sky-600 text-sm">${item.score} pts</div>
+                            <div class="text-[9px] text-slate-400">${item.qCount || 0} soalan dijawab</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 2. Aggregate school total scores from students belonging to the same school
+            const schoolMap = {};
+            validStudents.forEach(item => {
+                const sch = item.school || "Sekolah Tidak Dinyatakan";
+                if (!schoolMap[sch]) {
+                    schoolMap[sch] = { school: sch, totalScore: 0, studentCount: 0 };
+                }
+                schoolMap[sch].totalScore += Number(item.score) || 0;
+                schoolMap[sch].studentCount += 1;
+            });
+
+            const rankedSchools = Object.values(schoolMap).sort((a, b) => b.totalScore - a.totalScore);
+
+            if (rankedSchools.length === 0) {
+                schBox.innerHTML = `
+                    <div class="p-6 text-center text-slate-400 text-xs">
+                        <i class="fa-solid fa-school text-3xl text-slate-300 mb-2 block"></i>
+                        Belum ada rekod sekolah. Jawab soalan untuk menyumbang markah kepada sekolah anda!
+                    </div>`;
+            } else {
+                schBox.innerHTML = rankedSchools.map((item, idx) => `
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-6 h-6 flex items-center justify-center font-black rounded-full text-xs ${idx === 0 ? 'bg-amber-400 text-slate-900' : 'bg-slate-200 text-slate-700'}">${idx + 1}</span>
+                            <div>
+                                <div class="font-bold text-xs text-slate-800">${item.school}</div>
+                                <div class="text-[10px] text-slate-500">${item.studentCount} orang pelajar bertanding</div>
+                            </div>
+                        </div>
+                        <div class="font-black text-emerald-600 text-sm">${item.totalScore} pts</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openFormulaModal() {
+            document.getElementById('formulaModal').classList.remove('hidden');
+        }
+
+        function closeFormulaModal() {
+            document.getElementById('formulaModal').classList.add('hidden');
+        }
+
+        function openGoogleSheetSettings() {
+            document.getElementById('gsWebAppUrlInput').value = googleSheetWebAppUrl;
+            document.getElementById('gsModal').classList.remove('hidden');
+        }
+
+        function closeGoogleSheetSettings() {
+            document.getElementById('gsModal').classList.add('hidden');
+        }
+
+        function saveGsUrl() {
+            const input = document.getElementById('gsWebAppUrlInput').value.trim();
+            googleSheetWebAppUrl = input;
+            closeGoogleSheetSettings();
+            showToast("Google Sheet Web App URL disimpan!");
+        }
+
+        function showToast(msg) {
+            const box = document.getElementById('toastBox');
+            const txt = document.getElementById('toastMsg');
+            txt.innerText = msg;
+            box.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                box.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        window.onload = function() {
+            rawQuestionBank = generate100Questions();
+            randomizedQuestions = shuffleArray(rawQuestionBank);
+            initCanvas();
+            loadQuestion(0);
+            openLoginModal();
+
+            window.addEventListener('resize', () => {
+                initCanvas();
+            });
+        };
+    </script>
+</body>
+</html>
